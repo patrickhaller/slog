@@ -14,7 +14,7 @@ By default, slog will generate a key from the current source filename
 and function name for production logs. 
 
 This is for everyone who has googled log output, only to find that it was specific to 
-only a few releases, and all the results are just the code itself.
+only a few releases, and all the results were just the code itself.
 
 ### CONFIG
 
