@@ -10,8 +10,8 @@ the vast majority of use cases.
 
 Second, production logs should be keyed, where the key 1) indicates the
 locality of the problem, and 2) is relatively persistent across releases.
-By default, production logs should generate a key from the source filename 
-and the function name. 
+By default, slog will generate a key from the current source filename 
+and function name for production logs. 
 
 This is for everyone who has googled log output, only to find that it was specific to 
 only a few releases, and all the results are just the code itself.
