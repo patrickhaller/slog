@@ -33,6 +33,29 @@ func TestLogging(t *testing.T) {
 	}
 }
 
+func TestStack(t *testing.T) {
+	cfg := Config{
+		File:   "/tmp/a",
+		Debug:  true,
+		Prefix: "TST",
+	}
+	Init(cfg)
+	defer os.Remove(cfg.File)
+
+	f := func() { P("say hi to stack") }
+	f()
+
+	txt, err := ioutil.ReadFile(cfg.File)
+	if err != nil {
+		t.Errorf("failed to read `%s': %v", cfg.File, err)
+	}
+	s := string(txt)
+
+	if strings.Contains(s, "hi") == false {
+		t.Errorf("logfile `%s' does not contain canary ", cfg.File)
+	}
+}
+
 func TestDebug(t *testing.T) {
 	cfg := Config{
 		File:   "/tmp/a",
