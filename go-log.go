@@ -15,6 +15,7 @@ import (
 //    File = filename for development and production logs, default is production
 //    Debug = flag to switch to development logging
 //    AuditFile = filename to store audit / accounting logs
+//    Prefix = short prefix to the filename+function hash, e.g. ORA or NGINX
 type Config struct {
 	File      string
 	Debug     bool
