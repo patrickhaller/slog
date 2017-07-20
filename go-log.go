@@ -51,7 +51,9 @@ func Init(cfg Config) {
 
 	P = func(format string, args ...interface{}) {
 		// make the hash of filename + function name
-		pc := make([]uintptr, 10) // at least 1 entry needed
+		// https://stackoverflow.com/questions/25927660/golang-get-function-name
+
+		pc := make([]uintptr, 1)
 		runtime.Callers(2, pc)
 		f := runtime.FuncForPC(pc[0])
 		file, _ := f.FileLine(pc[0])
