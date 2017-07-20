@@ -1,9 +1,9 @@
-RATIONALE 
+###RATIONALE 
 
 Dave Cheney opined that there were only two kinds of logs needed:
 those used by production admin staff to keep the app running, and 
 development debug logs.
-https://dave.cheney.net/2015/11/05/lets-talk-about-logging
+[1](https://dave.cheney.net/2015/11/05/lets-talk-about-logging)
 
 That seems correct; it just needs audit / accounting logs to cover 
 the vast majority of use cases. 
@@ -16,7 +16,7 @@ and the function name.
 This is for everyone who has googled log output, only to find that it was specific to 
 only a few releases, and all the results are just the code itself.
 
-CONFIG
+###CONFIG
 
 The config has 4 options: 
 	File = the filename for production or development logs 
@@ -25,24 +25,29 @@ The config has 4 options:
 	Prefix = keyword prefix for the locality hash -- optional
 
 
-EXAMPLES
+###EXAMPLES
 
 A barebones init:
 
+```golang
 	slog.Init(slog.Config{
 		File:      "/dev/stderr",
 		Debug:     false,
 	})
 	slog.D("open file `%s'", cfg.File)
-	...
+	//...
 	slog.P("failed accessing `%s': %v", cfg.File, err)
+```
 
 Which would yield the following because Config.Debug was false:
 
+```
 2017/07/19 21:07:44 WARN TST-B0EAE04C failed accessing `/tmp/a': File not found
+```
 
 While a maximally verbose init:
 
+```golang
 	slog.Init(slog.Config{
 		File:      "/dev/stderr",
 		Debug:     true,
@@ -50,13 +55,15 @@ While a maximally verbose init:
 		Prefix:    "TST",
 	})
 	slog.D("open file `%s'", cfg.File)
-	...
+	//...
 	slog.P("failed accessing `%s': %v", cfg.File, err)
-	...
+	//...
 	slog.A("%s `%s' %s", r.Method, r.URL, r.RemoteAddr)
+```
 
-
+```
 2017/07/19 21:33:14.069128 go-log.go:53: open file `/tmp/a'
 2017/07/19 21:33:14.069179 go-log.go:73: WARN TST-B0EAE04C failed accessing `/tmp/a': File not found
+```
 
 
