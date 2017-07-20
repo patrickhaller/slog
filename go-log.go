@@ -49,6 +49,7 @@ func Init(cfg Config) {
 	}
 
 	P = func(format string, args ...interface{}) {
+		// make the hash of filename + function name
 		pc := make([]uintptr, 10) // at least 1 entry needed
 		runtime.Callers(2, pc)
 		f := runtime.FuncForPC(pc[0])
@@ -56,14 +57,15 @@ func Init(cfg Config) {
 		h := md5.New()
 		io.WriteString(h, path.Base(file))
 		io.WriteString(h, path.Base(f.Name()))
-		id := fmt.Sprintf("%X", h.Sum(nil))
+		id := fmt.Sprintf("%X", h.Sum(nil))[0:8]
+
 		var b bytes.Buffer
 		b.WriteString("WARN ")
 		if cfg.Prefix != "" {
 			b.WriteString(cfg.Prefix)
 			b.WriteString("-")
 		}
-		b.WriteString(id[0:8])
+		b.WriteString(id)
 		b.WriteString(" ")
 		b.WriteString(format)
 		log.Printf(b.String(), args...)
