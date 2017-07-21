@@ -32,13 +32,21 @@ var P func(format string, args ...interface{})
 // A is for Audit / Accounting
 var A func(format string, args ...interface{})
 
+func parseLogFile(filename string) *os.File {
+	if filename == "STDERR" {
+		return os.Stderr
+	}
+	logFile, err := os.OpenFile(filename, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0640)
+	if err != nil {
+		log.Printf("Open logfile `%s' failed: %v", filename, err)
+		return os.Stderr
+	}
+	return logFile
+}
+
 // Init -- must call this first to set up logging
 func Init(cfg Config) {
-	logFile, err := os.OpenFile(cfg.File, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0640)
-	if err != nil {
-		log.Printf("Open logfile `%s' failed: %v", cfg.File, err)
-	}
-	log.SetOutput(logFile)
+	log.SetOutput(parseLogFile(cfg.File))
 	if cfg.Debug == true {
 		log.SetFlags(log.Lmicroseconds | log.LstdFlags | log.Lshortfile)
 	}
