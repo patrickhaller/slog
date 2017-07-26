@@ -86,7 +86,7 @@ func Init(cfg Config) {
 		return
 	}
 
-	auditLog := log.New(parseLogFile(alogFile), "", log.LstdFlags)
+	auditLog := log.New(parseLogFile(cfg.AuditFile), "", log.LstdFlags)
 
 	A = func(format string, args ...interface{}) {
 		auditLog.Printf(format, args...)
