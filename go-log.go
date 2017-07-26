@@ -86,11 +86,7 @@ func Init(cfg Config) {
 		return
 	}
 
-	alogFile, err := os.OpenFile(cfg.AuditFile, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0640)
-	if err != nil {
-		log.Printf("Open logfile `%s' failed: %v", cfg.AuditFile, err)
-	}
-	auditLog := log.New(alogFile, "", log.LstdFlags)
+	auditLog := log.New(parseLogFile(alogFile), "", log.LstdFlags)
 
 	A = func(format string, args ...interface{}) {
 		auditLog.Printf(format, args...)
