@@ -33,7 +33,7 @@ A barebones init:
 
 ```golang
 	slog.Init(slog.Config{
-		File:      "/dev/stderr",
+		File:      "STDERR",
 		Debug:     false,
 		Prefix:    "TEST",
 	})
@@ -52,7 +52,7 @@ While a maximally verbose init:
 
 ```golang
 	slog.Init(slog.Config{
-		File:      "/dev/stderr",
+		File:      "STDERR",
 		Debug:     true,
 		AuditFile: "/var/log/TEST.log",
 		Prefix:    "TEST",
