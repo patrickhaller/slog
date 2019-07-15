@@ -23,6 +23,11 @@ type Config struct {
 	Prefix    string
 }
 
+// F for use before slog is initialized
+func F(format string, args ...interface{}) {
+	log.Fatalf(format, args...)
+}
+
 // D for Developers' use
 var D func(format string, args ...interface{})
 
@@ -52,9 +57,18 @@ func Init(cfg Config) {
 	}
 
 	D = func(format string, args ...interface{}) {
-		if cfg.Debug == true {
-			log.Printf(format, args...)
+		if cfg.Debug == false {
+			return
 		}
+		pc := make([]uintptr, 1)
+		runtime.Callers(2, pc)
+		f := runtime.FuncForPC(pc[0])
+		id := path.Base(f.Name())
+		var b bytes.Buffer
+		b.WriteString(id)
+		b.WriteString(" ")
+		b.WriteString(format)
+		log.Printf(b.String(), args...)
 	}
 
 	P = func(format string, args ...interface{}) {
@@ -69,6 +83,9 @@ func Init(cfg Config) {
 		io.WriteString(h, path.Base(file))
 		io.WriteString(h, path.Base(f.Name()))
 		id := fmt.Sprintf("%X", h.Sum(nil))[0:8]
+		if cfg.Debug {
+			id = fmt.Sprintf("%s:%s", id, path.Base(f.Name()))
+		}
 
 		var b bytes.Buffer
 		b.WriteString("WARN ")
