@@ -24,18 +24,16 @@ type Config struct {
 }
 
 // F for use before slog is initialized
-func F(format string, args ...interface{}) {
-	log.Fatalf(format, args...)
-}
+var F = log.Fatalf
 
 // D for Developers' use
-var D func(format string, args ...interface{})
+var D = F
 
 // P is for Production use
-var P func(format string, args ...interface{})
+var P = F
 
 // A is for Audit / Accounting
-var A func(format string, args ...interface{})
+var A = F
 
 func parseLogFile(filename string) *os.File {
 	if filename == "STDERR" {
