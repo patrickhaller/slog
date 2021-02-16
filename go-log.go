@@ -12,10 +12,10 @@ import (
 )
 
 // Config holds our configuration details
-//    File = filename for development and production logs, default is production
-//    Debug = flag to switch to development logging
-//    AuditFile = filename to store audit / accounting logs
-//    Prefix = short prefix to the filename+function hash, e.g. ORA or NGINX
+/*  File      = filename for development and production logs, default is production
+    Debug     = flag to switch to development logging
+    AuditFile = filename to store audit / accounting logs
+    Prefix    = short prefix to the filename+function hash, e.g. ORA or NGINX */
 type Config struct {
 	File      string
 	Debug     bool
@@ -34,6 +34,39 @@ var P = F
 
 // A is for Audit / Accounting
 var A = F
+
+/* Now add drop-in support so people can just
+import (
+	log "github.com/patrickhaller/slog"
+)
+*/
+
+// Fatal is for drop-in support
+var Fatal = log.Fatal
+
+// Fatalf is for drop-in support
+var Fatalf = log.Fatalf
+
+// Fatalln is for drop-in support
+var Fatalln = log.Fatalln
+
+// Panic is for drop-in support
+var Panic = log.Panic
+
+// Panicf is for drop-in support
+var Panicf = log.Panicf
+
+// Panicln is for drop-in support
+var Panicln = log.Panicln
+
+// Print is for drop-in support
+var Print = log.Print
+
+// Printf is for drop-in support
+var Printf = log.Printf
+
+// Println is for drop-in support
+var Println = log.Println
 
 func parseLogFile(filename string) *os.File {
 	if filename == "STDERR" {
